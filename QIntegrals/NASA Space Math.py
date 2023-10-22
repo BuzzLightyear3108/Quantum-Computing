@@ -137,6 +137,8 @@ def qintegrals(var, RawEqParts, debugPrint=False):
     return Eqn_Integrated
 
 
+# # Total dose over certain time intervals during certain orbits of the spacecraft
+# 
 # Calculations for: NASA Space Math 10Page120.pdf - Problem 2
 #     
 # PDF Document: https://spacemath.gsfc.nasa.gov/Calculus/10Page120.pdf
@@ -152,6 +154,8 @@ Eqn_Integrated = qintegrals(T, RawEqParts)
 print(Eqn_Integrated)
 
 
+# # Volume of Comet Nucleus
+# 
 # Calculations for: NASA Space Math 7Page48.pdf - Problem 1B
 # 
 # PDF Document: https://spacemath.gsfc.nasa.gov/Calculus/7Page48.pdf
@@ -167,6 +171,8 @@ Eqn_Integrated = qintegrals(T, RawEqParts)
 print(Eqn_Integrated)
 
 
+# # Total mass in tons of impacting objects each year over the surface of Earth
+# 
 # Calculations for: NASA Space Math 10Page113.pdf - Problem 2
 # 
 # PDF Document: https://spacemath.gsfc.nasa.gov/Calculus/10Page113.pdf
