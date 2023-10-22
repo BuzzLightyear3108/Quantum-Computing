@@ -4,6 +4,12 @@
 # <div style="font-size:225%; font-weight:bold; text-align: center; margin-bottom: 20px">NASA Space Math</div>
 # <div style="font-size:175%; font-weight:bold; text-align: center">Using Quantum Algorithms Simulator to solve Integrals</div>
 
+# This project is using Qiskit.
+# 
+# Therefore, for more information about how Quantum Gates are implementing their functions using building blocks like Hadamard gates, etc., refer to this documentation.
+# 
+# License: https://creativecommons.org/licenses/by/4.0/deed.en (Please provide credit for my work)
+
 # In[1]:
 
 
