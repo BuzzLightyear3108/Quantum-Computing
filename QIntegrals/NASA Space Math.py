@@ -137,7 +137,7 @@ def qintegrals(var, RawEqParts, debugPrint=False):
     return Eqn_Integrated
 
 
-# # Total dose over certain time intervals during certain orbits of the spacecraft
+# # Total radiation dose over certain time intervals during certain orbits of the spacecraft
 # 
 # Calculations for: NASA Space Math 10Page120.pdf - Problem 2
 #     
