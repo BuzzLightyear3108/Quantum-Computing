@@ -59,8 +59,8 @@ def qMul_w_QAdd(a, b):
         = 10000+8000+500+6000+4800+300+800+640+40 = 31080
     '''
     
-    aReversed = str(a)[::-1]
-    bReversed = str(b)[::-1]
+    aReversed = str(abs(a))[::-1]
+    bReversed = str(abs(b))[::-1]
 
     productList = []
 
@@ -70,5 +70,8 @@ def qMul_w_QAdd(a, b):
             numPlaceValuedStr = rawNum + '0'*(aDigitIndex+bDigitIndex)
             numPlaceValued = int(numPlaceValuedStr)
             productList.append(numPlaceValued)
+    
+    ASign = [-1, 1][a >= 0]
+    BSign = [-1, 1][b >= 0]
 
-    return QAdd(productList)
+    return ASign*BSign*QAdd(productList)
