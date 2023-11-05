@@ -1,7 +1,9 @@
-from tkinter import *
 import os
 import ctypes
 import threading
+
+from tkinter import *
+import tkinter.scrolledtext as st
 
 from sympy.parsing.sympy_parser import parse_expr
 
@@ -16,7 +18,7 @@ def evaluate(event):
 
 def evaluateRaw():
     try:
-        EqnsList1 = EqnsText.get(1.0, 'end').replace('**', '^').split('\n')
+        EqnsList1 = EqnsText.get(1.0, 'end').replace('^', '**').split('\n')
         EqnsList2 = [sympy.parsing.sympy_parser.parse_expr(el1) for el1 in EqnsList1 if el1 != '']
         EqnsList3 = [sympy.Add.make_args(el2) for el2 in EqnsList2]
         EqnsList4 = [QIntegrals(el3, window) for el3 in EqnsList3]
@@ -37,6 +39,11 @@ def evaluateRaw():
     
     except:
         ErrMsgText['state'] = 'normal'
+        ErrMsgText.delete('1.0', 'end')
+        
+        IntEqnsText['state'] = 'normal'
+        IntEqnsText.delete('1.0', 'end')
+        IntEqnsText['state'] = 'disabled'
         
         if ErrMsgText.get('1.0', 'end') != '\n':
             ErrMsgText.insert('end', '\n\n')
@@ -48,7 +55,7 @@ def evaluateRaw():
 window = Tk()
 
 window.title('Quantum Integral Calculator')  # title of the GUI window
-window.geometry('968x856+175+80')  # specify the max size the window can expand to
+window.geometry('1010x900+175+80')  # specify the max size the window can expand to
 window.resizable(False, False)
 window.config(bg='skyblue')  # specify background color
 
@@ -66,14 +73,14 @@ bottom_frame.grid(row=1, column=0, padx=10, pady=5, columnspan=2)
 Label(left_frame, text='Equations:', font=('Arial', 20)).grid(row=0, column=0, padx=5, pady=5)
 
 # Textbox for Original Equations in left_frame
-EqnsText = Text(left_frame, width=30, height=10, font=('Arial', 16))
+EqnsText = st.ScrolledText(left_frame, width=30, height=10, font=('Arial', 16))
 EqnsText.grid(row=2, column=0, padx=5, pady=5)
 
 # Create title for Integrated Equations
 Label(right_frame, text='Integrated Equations:', font=('Arial', 20)).grid(row=0, column=1, padx=5, pady=5)
 
 # Textbox for Integrated Equations in right_frame
-IntEqnsText = Text(right_frame, width=30, height=10, font=('Arial', 16))
+IntEqnsText = st.ScrolledText(right_frame, width=30, height=10, font=('Arial', 16))
 IntEqnsText['state'] = 'disabled'
 IntEqnsText.grid(row=2, column=1, padx=5, pady=5)
 
@@ -81,7 +88,7 @@ IntEqnsText.grid(row=2, column=1, padx=5, pady=5)
 Label(bottom_frame, text='Error Message Display (in case there are errors)', font=('Arial', 20)).grid(row=0, column=0, padx=5, pady=5, columnspan=2)
 
 # Textbox for Display Error Messages in right_frame
-ErrMsgText = Text(bottom_frame, width=100, height=20, font=('Arial', 10))
+ErrMsgText = st.ScrolledText(bottom_frame, width=100, height=20, font=('Arial', 10))
 ErrMsgText['state'] = 'disabled'
 ErrMsgText.grid(row=2, column=0, padx=10, pady=5, columnspan=2)
 
