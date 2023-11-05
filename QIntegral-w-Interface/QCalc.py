@@ -95,4 +95,4 @@ ErrMsgText.grid(row=2, column=0, padx=10, pady=5, columnspan=2)
 # Create Key Event so when EqnsText is given input, IntEqnsText is already updated
 EqnsText.bind('<Key>', evaluate)
 
-# window.mainloop()
+window.mainloop()
