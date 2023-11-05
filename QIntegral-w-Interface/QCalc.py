@@ -16,6 +16,12 @@ def evaluate(event):
     # in order to make sure that tkinter has handled the keyboard press
     window.after(1, evaluateRaw)
 
+def editIntEqnsText(content=''):
+    IntEqnsText['state'] = 'normal'
+    IntEqnsText.delete('1.0', 'end')
+    IntEqnsText.insert('end', content)
+    IntEqnsText['state'] = 'disabled'
+
 def evaluateRaw():
     try:
         EqnsList1 = EqnsText.get(1.0, 'end').replace('^', '**').split('\n')
@@ -28,10 +34,7 @@ def evaluateRaw():
         
         result = '\n\n'.join(EqnsList7)
         
-        IntEqnsText['state'] = 'normal'
-        IntEqnsText.delete('1.0', 'end')
-        IntEqnsText.insert('end', result.replace('**', '^'))
-        IntEqnsText['state'] = 'disabled'
+        editIntEqnsText(result.replace('**', '^'))
         
         ErrMsgText['state'] = 'normal'
         ErrMsgText.delete('1.0', 'end')
@@ -41,9 +44,7 @@ def evaluateRaw():
         ErrMsgText['state'] = 'normal'
         ErrMsgText.delete('1.0', 'end')
         
-        IntEqnsText['state'] = 'normal'
-        IntEqnsText.delete('1.0', 'end')
-        IntEqnsText['state'] = 'disabled'
+        editIntEqnsText()
         
         if ErrMsgText.get('1.0', 'end') != '\n':
             ErrMsgText.insert('end', '\n\n')
