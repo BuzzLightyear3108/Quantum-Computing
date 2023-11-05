@@ -16,11 +16,11 @@ def evaluate(event):
     # in order to make sure that tkinter has handled the keyboard press
     window.after(1, evaluateRaw)
 
-def editIntEqnsText(content=''):
-    IntEqnsText['state'] = 'normal'
-    IntEqnsText.delete('1.0', 'end')
-    IntEqnsText.insert('end', content)
-    IntEqnsText['state'] = 'disabled'
+def editText(Textbox, content=''):
+    Textbox['state'] = 'normal'
+    Textbox.delete('1.0', 'end')
+    Textbox.insert('end', content)
+    Textbox['state'] = 'disabled'
 
 def evaluateRaw():
     try:
@@ -34,24 +34,12 @@ def evaluateRaw():
         
         result = '\n\n'.join(EqnsList7)
         
-        editIntEqnsText(result.replace('**', '^'))
-        
-        ErrMsgText['state'] = 'normal'
-        ErrMsgText.delete('1.0', 'end')
-        ErrMsgText['state'] = 'disabled'
+        editText(ErrMsgText)
+        editText(IntEqnsText, result.replace('**', '^'))
     
     except:
-        ErrMsgText['state'] = 'normal'
-        ErrMsgText.delete('1.0', 'end')
-        
-        editIntEqnsText()
-        
-        if ErrMsgText.get('1.0', 'end') != '\n':
-            ErrMsgText.insert('end', '\n\n')
-        
-        ErrMsgText.insert('end', format_exc())
-        
-        ErrMsgText['state'] = 'disabled'
+        editText(IntEqnsText)
+        editText(ErrMsgText, format_exc())
 
 window = Tk()
 
