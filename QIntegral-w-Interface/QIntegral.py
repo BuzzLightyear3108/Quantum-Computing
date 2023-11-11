@@ -53,7 +53,7 @@ def QIntegrals(RawEqParts, interfaceWindow=None, debugPrint=False):
 
         # New Exponent for the integrated expression
         # Add by a value equal to the denominator of the 2nd/Divisor Fraction (e.g. if denominator=2, then 2/2=1, so add by two)
-        integExp = coeffExpFrac[1][0]+denominator
+        integExp = QAdd([coeffExpFrac[1][0], denominator])
         integExp /= denominator
         
         if integExp % 1 == 0: integExp = int(integExp)

@@ -23,7 +23,7 @@ import sympy
 from _functools import *
 from traceback import format_exc
 
-def initGates(circuit, qreq, nInputs, gateName='id'):
+def initGates(circuit, qreq, nInputs, inputIndexBegin=0, gateName='id'):
     '''Determine Input Value (Either 0 or 1)
     Initialization Gates
     First, zero it out at the beginning.
@@ -33,10 +33,10 @@ def initGates(circuit, qreq, nInputs, gateName='id'):
 
     circuit.data = [CircuitInstruction(operation=Instruction(name=gateName, num_qubits=1, num_clbits=0, params=[]),
                                     qubits=(Qubit(qreq, inputIndex),),
-                                    clbits=()) for inputIndex in range(nInputs)]
+                                    clbits=()) for inputIndex in range(inputIndexBegin, nInputs)]
 
 
-def QAdd(addends):
+def QAdd(addends, aCirc=None):
     '''
     The quantum circuit is in the addition parts.
     It uses a type of qiskit circuit called WeightedAdder.
@@ -54,10 +54,9 @@ def QAdd(addends):
         = 10000+8000+500+6000+4800+300+800+640+40 = 31080
     '''
     
-    weights = addends
+    weights = list(addends[:10])
     
     aCirc1 = WeightedAdder(num_state_qubits=len(weights), weights=weights)
-    aCirc1.num_qubits
     nQubits = aCirc1.num_qubits
     qubits = aCirc1.qubits
     
@@ -67,7 +66,9 @@ def QAdd(addends):
     q = QuantumRegister(nQubits, 'q')
     c = ClassicalRegister(nOutputs, 'c')
     
-    aCirc = QuantumCircuit(q, c)
+    if aCirc is None:
+        aCirc = QuantumCircuit(q, c)
+    
     initGates(aCirc, q, nInputs, gateName='x')
     aCirc.append(aCirc1, range(nQubits))
     aCirc.measure(sumQubitIndices, range(nOutputs))
@@ -77,6 +78,14 @@ def QAdd(addends):
     result = job.result()
     counts = result.get_counts()
     
-    return int(list(counts)[0], 2)
+    resultNum = int(list(counts)[0], 2)
     
+    if len(addends) > 10:
+        addends[:10] = [resultNum]
+        return QAdd(addends)
+        
+    else:
+        return resultNum
     
+def QAdd1(*addends):
+    return QAdd(list(addends))

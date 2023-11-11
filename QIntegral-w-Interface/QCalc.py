@@ -27,7 +27,7 @@ def evaluateRaw():
         EqnsList1 = EqnsText.get(1.0, 'end').replace('^', '**').split('\n')
         EqnsList2 = [sympy.parsing.sympy_parser.parse_expr(el1) for el1 in EqnsList1 if el1 != '']
         EqnsList3 = [sympy.Add.make_args(el2) for el2 in EqnsList2]
-        EqnsList4 = [QIntegrals(el3, window) for el3 in EqnsList3]
+        EqnsList4 = [QIntegrals(el3, window,1) for el3 in EqnsList3]
         EqnsList5 = [[el4Expr.as_coeff_exponent(extractVarFromExpr(el4Expr)[0])+(extractVarFromExpr(el4Expr)[0],) for el4Expr in el4] for el4 in EqnsList4]; ErrMsgText.insert('end', str(EqnsList5))
         EqnsList6 = [[sympy.Mul(sympy.UnevaluatedExpr(el5Expr[0]), sympy.UnevaluatedExpr(sympy.Pow(el5Expr[2], el5Expr[1]))) for el5Expr in el5] for el5 in EqnsList5]
         EqnsList7 = [str(sum(el6)+sympy.UnevaluatedExpr(sympy.Symbol('C'))) for el6 in EqnsList6]
