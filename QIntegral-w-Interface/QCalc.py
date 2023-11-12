@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# coding: utf-8
+# Made by Noble Huang
+
 import os
 import ctypes
 import threading

@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# coding: utf-8
+# Made by Noble Huang
+
 from QMul import *
 
 def extractVarFromExpr(expr):

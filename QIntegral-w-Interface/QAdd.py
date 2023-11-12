@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# coding: utf-8
+# Made by Noble Huang
+
 from qiskit import QuantumCircuit, Aer, execute, transpile, execute, IBMQ
 from qiskit_aer import AerSimulator
 
@@ -5,8 +9,7 @@ from qiskit.tools.monitor import job_monitor
 from qiskit.circuit.library import WeightedAdder
 
 from qiskit.circuit import Instruction, CircuitInstruction, Qubit, QuantumRegister, Clbit, ClassicalRegister
-from qiskit.circuit.library.standard_gates import IGate, XGate, CXGate, CCXGate, C3XGate, C4XGate, MCXGate, \
-                                                  RXGate, RYGate, RZGate, HGate
+from qiskit.circuit.library.standard_gates import IGate, XGate, CXGate, CCXGate, C3XGate, C4XGate, MCXGate, RXGate, RYGate, RZGate, HGate
 from qiskit.exceptions import QiskitError
 
 import matplotlib.pyplot as plt
@@ -36,7 +39,7 @@ def initGates(circuit, qreq, nInputs, inputIndexBegin=0, gateName='id'):
                                     clbits=()) for inputIndex in range(inputIndexBegin, nInputs)]
 
 
-def QAdd(addends, aCirc=None):
+def QAdd(addends, BehindDigitsLen=None, aCirc=None, method='matrix_product_state', shots=2000):
     '''
     The quantum circuit is in the addition parts.
     It uses a type of qiskit circuit called WeightedAdder.
@@ -53,6 +56,16 @@ def QAdd(addends, aCirc=None):
         = (100+60+8)*(100+80+5)
         = 10000+8000+500+6000+4800+300+800+640+40 = 31080
     '''
+    
+    if BehindDigitsLen is None:
+        addendsText = [str(addend) for addend in addends]
+        addendsText = [addendText if '.' in addendText else addendText+'.0' for addendText in addendsText]
+        addendsBehindDigits = [addendText.split('.') for addendText in addendsText]
+        addendsBehindDigitsLen = [len(addendBehindDigits[1]) if '.' in addendText else 0 for addendText, addendBehindDigits in zip(addendsText, addendsBehindDigits)]
+    
+        BehindDigitsLen = max(addendsBehindDigitsLen)
+        
+        addends = [int(addendText.replace('.', '')) for addendText in addendsText]
     
     weights = list(addends[:10])
     
@@ -73,8 +86,8 @@ def QAdd(addends, aCirc=None):
     aCirc.append(aCirc1, range(nQubits))
     aCirc.measure(sumQubitIndices, range(nOutputs))
     
-    backend = AerSimulator(method='matrix_product_state')
-    job = execute(aCirc, backend, shots=2000)
+    backend = AerSimulator(method=method)
+    job = execute(aCirc, backend, shots=shots)
     result = job.result()
     counts = result.get_counts()
     
@@ -82,10 +95,19 @@ def QAdd(addends, aCirc=None):
     
     if len(addends) > 10:
         addends[:10] = [resultNum]
-        return QAdd(addends)
+        return QAdd(addends, BehindDigitsLen)
         
     else:
-        return resultNum
+        sum1 = resultNum
+        sum2 = list(str(sum1))
+        
+        if BehindDigitsLen > 0:
+            sum2[-BehindDigitsLen:-BehindDigitsLen] = ['.']
+        
+        sum3 = ''.join(sum2)
+        sum4 = sum3.replace('.0', '') if sum3.endswith('.0') else sum3
+
+        return sum4
     
 def QAdd1(*addends):
     return QAdd(list(addends))
